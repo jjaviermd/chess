@@ -53,7 +53,6 @@ class Board
       [@w_pawn_a, @w_pawn_b, @w_pawn_c, @w_pawn_d, @w_pawn_e, @w_pawn_f, @w_pawn_g, @w_pawn_h],
       [@l_w_rook, @l_w_knight, @l_w_bishop, @w_queen, @w_king, @r_w_bishop, @r_w_knight, @r_w_rook]
     ]
-
   end
 
   def print_board
@@ -67,6 +66,14 @@ class Board
     puts "   A   B   C   D   E   F   G   H "
    end
 
+   def update_board(piece, line, column)
+    chess_board.each do |row|
+      if row.include?(piece)
+        row[row.index(piece)] = " "
+      end
+    end
+    self.chess_board[line][column] = piece
+   end
+
 end
-game =  Board.new
-game.print_board
+
