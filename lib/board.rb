@@ -26,22 +26,22 @@ class Board
     @w_pawn_g = "\u{2659}"
     @w_pawn_h = "\u{2659}" 
 
-    @b_king = "\u{2654}"
-    @b_queen = "\u{2655}"
-    @l_b_rook = "\u{2656}"
-    @r_b_rook = "\u{2656}"
-    @l_b_bishop = "\u{2657}"
-    @r_b_bishop = "\u{2657}"
-    @l_b_knight = "\u{2658}"
-    @r_b_knight = "\u{2658}"
-    @b_pawn_a = "\u{2659}"
-    @b_pawn_b = "\u{2659}"
-    @b_pawn_c = "\u{2659}"
-    @b_pawn_d = "\u{2659}"
-    @b_pawn_e = "\u{2659}"
-    @b_pawn_f = "\u{2659}"
-    @b_pawn_g = "\u{2659}"
-    @b_pawn_h = "\u{2659}" 
+    @b_king = "\u{265A}"
+    @b_queen = "\u{265B}"
+    @l_b_rook = "\u{265C}"
+    @r_b_rook = "\u{265C}"
+    @l_b_bishop = "\u{265D}"
+    @r_b_bishop = "\u{265D}"
+    @l_b_knight = "\u{265E}"
+    @r_b_knight = "\u{265E}"
+    @b_pawn_a = "\u{265F}"
+    @b_pawn_b = "\u{265F}"
+    @b_pawn_c = "\u{265F}"
+    @b_pawn_d = "\u{265F}"
+    @b_pawn_e = "\u{265F}"
+    @b_pawn_f = "\u{265F}"
+    @b_pawn_g = "\u{265F}"
+    @b_pawn_h = "\u{265F}" 
 
     @chess_board =[
       [@l_b_rook, @l_b_knight, @l_b_bishop, @b_queen, @b_king, @r_b_bishop, @r_b_knight, @r_b_rook],
@@ -57,12 +57,14 @@ class Board
   end
 
   def print_board
-    puts "A B C D E F G H"
+    i = 8
+    puts "   A   B   C   D   E   F   G   H "
     chess_board.each do |row| 
-      puts row.join("|")
-      puts "+++++++++++++++"
+      puts "#{i}| #{row.join(" | ")} |#{i}"
+      puts "-" * 36
+      i -= 1
     end
-    puts "A B C D E F G H"
+    puts "   A   B   C   D   E   F   G   H "
    end
 
 end
