@@ -66,14 +66,5 @@ class Board
     puts "   A   B   C   D   E   F   G   H "
    end
 
-   def update_board(piece, line, column)
-    chess_board.each do |row|
-      if row.include?(piece)
-        row[row.index(piece)] = " "
-      end
-    end
-    self.chess_board[line][column] = piece
-   end
-
 end
 
