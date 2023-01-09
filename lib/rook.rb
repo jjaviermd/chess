@@ -1,3 +1,5 @@
+require "pry-byebug"
+
 class Rook
   attr_accessor :position
   def initialize(position)
@@ -5,29 +7,11 @@ class Rook
     @position = position
   end
 
-  def move_to(y, x)
-
-    #refactor this function later son that coordinates are always between 0 and 7.
-    if y.between?(0, 7) && x.between?(0, 7)
-
-      if y == self.position.first && x == self.position.last #destinacion == position
-        #raise error destination and current position are the same
-        puts "error"
-      elsif y != self.position.first && x != self.position.last # non lineaer move for a rook
-        #raise error, a rook can't move in that direction
-        puts "error"
-      elsif y == self.position[0]
-        @position[-1] = x
-      else
-        # x == self.position.last
-        @position[0] = y
-      end
-
-    else
-      puts "out of Boundaries"
-    end
+  def can_go?(y, x)
+    if y != self.position.first && x != self.position.last 
+      return false
+    elsif y == self.position[0] ||x == self.position.last
+      return true
+    end 
   end 
-
-
 end
-
