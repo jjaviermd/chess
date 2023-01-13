@@ -1,5 +1,3 @@
-require "pry-byebug"
-
 class King
 
   attr_accessor :position

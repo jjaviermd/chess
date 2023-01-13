@@ -1,4 +1,3 @@
-require "pry-byebug"
 class Pawn
 
   attr_accessor :position
@@ -24,7 +23,3 @@ class BlackPawn < Pawn
     return false
   end
 end
-
-b_pawn = BlackPawn.new([1,2])
-binding pry
-p un_pawn.position

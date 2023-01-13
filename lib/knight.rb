@@ -7,11 +7,11 @@ class Knight
     @moves = [[1,2], [-1,-2], [1,-2], [-1,2], [2,-1], [2, 1], [-2, 1], [-2, -1]].freeze
   end
 
-  def move_to(y,x)
+  def can_go?(y,x)
     current_move = [self.position[0] - y, self.position[1] - x]
     if self.moves.include?(current_move)
-      puts "Allowed"
-    else puts "not Allowed"
+      return true
+    else return false
     end
   end
 
