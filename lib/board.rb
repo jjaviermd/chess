@@ -3,11 +3,8 @@ require "pry-byebug"
 class Board
 
   attr_accessor :chess_board
-  attr_reader :w_king, :w_queen, :l_w_rook, :l_w_knight, :l_w_bishop, :r_w_rook,
-  :r_w_knight, :r_w_bishop, :w_pawn_a, :w_pawn_b, :w_pawn_c, :w_pawn_d, :w_pawn_e,
-  :w_pawn_f, :w_pawn_g, :w_pawn_h, :b_king, :b_queen, :l_b_bishop, :r_b_bishop,
-  :l_b_knight, :r_b_knight, :l_b_rook, :r_w_knight, :b_pawn_a, :b_pawn_b, :b_pawn_c,
-  :b_pawn_d, :b_pawn_e, :b_pawn_f, :b_pawn_g, :b_pawn_h
+  attr_reader :b_rook, :b_knight, :b_bishop, :b_king, :b_queen, :b_pawn,
+    :w_knight, :w_rook, :w_bishop, :w_king, :w_queen, :w_pawn
 
 
   def initialize
@@ -28,14 +25,14 @@ class Board
  
 
     @chess_board =[
-      [@b_rook, @b_knight, @b_bishop, @b_queen, @b_king, @b_bishop, @b_knight, @b_rook],
-      (@b_pawn * 8).split(""),
+      [b_rook, b_knight, b_bishop, b_queen, b_king, b_bishop, b_knight, b_rook],
+      (b_pawn * 8).split(""),
       Array.new(8, " "),
       Array.new(8, " "),
       Array.new(8, " "),
       Array.new(8, " "),
-      (@w_pawn * 8).split(""),
-      [@w_rook, @w_knight, @w_bishop, @w_queen, @w_king, @w_bishop, @w_knight, @w_rook]
+      (w_pawn * 8).split(""),
+      [w_rook, w_knight, w_bishop, w_queen, w_king, w_bishop, w_knight, w_rook]
     ]
   end
 
