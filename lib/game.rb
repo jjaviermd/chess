@@ -30,13 +30,14 @@ class Game
     x = input[1].ord - 97
     y = 8 - input[2].to_i
     self.current_piece.position = [y,x]
-    self.current_piece = nil
+    
     self.move = nil
   end
 
   def capture
     captured = self.hold_player.positions.key(self.current_piece.position)
     self.hold_player.remove_instance_variable(captured) if captured
+    self.current_piece = nil
   end
 
 
@@ -49,6 +50,31 @@ class Game
     return false unless input[1].between?("a", "h")
     return false unless input[2].to_i.between?(1, 8)
     return true
+  end
+
+  def can_pawn_go?(peon, y, x)
+    if peon.is_a? WhitePawn
+      if peon.position.first - y == 1 && x == peon.position.last && (!self.hold_player.positions.has_value?([y,x]) || !self.current_player.positions.has_value?([y,x]))
+        return true
+      elsif peon.position.first - y == 1 && (peon.position.last - x).abs == 1 && self.hold_player.positions.has_value?([y,x])
+        return true
+      elsif peon.position.first - y == 2 && x == peon.position.last && peon.position.first == 6
+        return true
+      else
+        return false
+      end
+      
+    elsif peon.is_a? BlackPawn
+      if y - peon.position.first == 1 && x == peon.position.last && (!self.hold_player.positions.has_value?([y,x]) || self.current_player.positions.has_value?([y,x]))
+        return true
+      elsif y - peon.position.first == 1 && (peon.position.last - x).abs == 1 && self.hold_player.positions.has_value?([y,x])
+        return true
+      elsif y - peon.position.first == 2 && x == peon.position.last && peon.position.first == 1
+        return true
+      else
+        return false
+      end
+    end
   end
 
   def current_piece_set(input)
@@ -82,7 +108,7 @@ class Game
       self.current_player.e_pawn,
       self.current_player.f_pawn,
       self.current_player.g_pawn,
-      self.current_player.h_pawn].select { |pawn| pawn.can_go?(y,x)}.first
+      self.current_player.h_pawn].select { |pawn| can_pawn_go?(pawn,y,x)}.first
     end
   end
 
@@ -149,12 +175,15 @@ $white_player = gets.chomp
 puts "blacks name?"
 $black_player = gets.chomp
 game = Game.new
-# 2.times do
-# game.next_move
-# game.make_move(game.move)
-# game.capture
-# game.change_current_player
-# end
+2.times do
+game.next_move
+
+binding pry
+
+game.make_move(game.move)
+game.capture
+game.change_current_player
+end
 
 binding pry
 # game.make_move(game.move)
