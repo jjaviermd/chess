@@ -63,7 +63,7 @@ class Game
       else
         return false
       end
-      
+
     elsif peon.is_a? BlackPawn
       if y - peon.position.first == 1 && x == peon.position.last && (!self.hold_player.positions.has_value?([y,x]) || self.current_player.positions.has_value?([y,x]))
         return true
@@ -77,6 +77,33 @@ class Game
     end
   end
 
+  def can_rook_go?(rook, y, x)
+    if self.current_player.positions.has_value?([y,x])
+      return false
+    elsif y != rook.position.first && x != rook.position.last 
+      return false
+    elsif y == rook.position.first
+      r = [rook.position.last,x].min+1..[rook.position.last,x].max-1
+      for i in r do
+        if self.hold_player.positions.has_value?([y,i]) || self.current_player.positions.has_value?([y,i])
+          return false 
+        end
+      end
+      return true
+    elsif x == rook.position.last
+      r = [rook.position.first, y].min+1..[rook.position.first, y].max-1
+      for i in r do
+        if self.hold_player.positions.has_value?([i,x]) || self.current_player.positions.has_value?([i,x])
+          return false
+        end
+      end
+      return true
+    else
+      return true
+    end 
+    
+  end 
+
   def current_piece_set(input)
 
     x = input[1].ord - 97
@@ -86,7 +113,7 @@ class Game
     when "r"
       self.current_piece = [
       self.current_player.l_rook,
-      self.current_player.r_rook].select{ |rook| rook.can_go?(y,x)}.first
+      self.current_player.r_rook].select{ |rook| can_rook_go?(rook,y,x)}.first
     when "n"
       self.current_piece = [
       self.current_player.l_knight,
