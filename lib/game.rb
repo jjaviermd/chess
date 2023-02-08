@@ -78,11 +78,11 @@ class Game
   end
 
   def can_rook_go?(rook, y, x)
-    if self.current_player.positions.has_value?([y,x])
-      return false
-    elsif y != rook.position.first && x != rook.position.last 
-      return false
-    elsif y == rook.position.first
+    return false if self.current_player.positions.has_value?([y,x])
+
+    return false unless rook.can_go?(y,x)
+
+    if y == rook.position.first
       r = [rook.position.last,x].min+1..[rook.position.last,x].max-1
       for i in r do
         if self.hold_player.positions.has_value?([y,i]) || self.current_player.positions.has_value?([y,i])
@@ -98,11 +98,111 @@ class Game
         end
       end
       return true
-    else
-      return true
     end 
-    
   end 
+
+  def can_knight_go?(knight, y, x)
+    return false if self.current_player.positions.has_value?([y,x])
+    return knight.can_go?(y,x)
+  end
+
+  def can_bishop_go?(bishop,y,x)
+
+    return false unless bishop.can_go?(y,x) 
+    return false if self.current_player.positions.has_value?([y,x])
+
+    if bishop.position.first < y && bishop.position.last > x
+      i = bishop.position.first + 1
+      j = bishop.position.last - 1
+      (y - bishop.position.first).times do
+        if self.current_player.positions.has_value?([i,j])
+          return false
+          break
+        end
+        # return false if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
+        if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
+          return false
+          break
+        end
+        i + 1
+        j - 1
+      end
+      return true
+    end
+
+    if bishop.position.first < y && bishop.position.last < x
+      i = bishop.position.first + 1
+      j = bishop.position.last + 1
+      (y - bishop.position.first).times do
+        if self.current_player.positions.has_value?([i,j])
+          return false
+          break
+        end
+        # return false if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
+        if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
+          return false
+          break
+        end
+        i + 1
+        j + 1
+      end
+      return true
+    end
+
+  if bishop.position.first > y && bishop.position.last > x
+    i = bishop.position.first - 1 
+    j = bishop.position.last - 1
+    (bishop.position.first - y).times do
+      if self.current_player.positions.has_value?([i,j])
+        return false
+        break
+      end
+      # return false if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
+      if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
+        return false
+        break
+      end
+      i - 1
+      j - 1
+    end
+    return true
+  end
+
+  if bishop.position.first > y && bishop.position.last < x
+    i = bishop.position.first - 1
+    j = bishop.position.last + 1
+    (bishop.position.first - y).times do
+      if self.current_player.positions.has_value?([i,j])
+        return false
+        break
+      end
+      # return false if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
+      if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
+        return false
+        break
+      end
+      i - 1
+      j + 1
+    end
+    return true
+  end
+
+  end  
+
+  def can_queen_go?(queen, y, x)
+    return false unless queen.can_go?(y,x)
+    if y == queen.position.first || x == queen.position.last
+      return can_rook_go?(queen, y, x)
+    else
+      return can_bishop_go?(queen, y, x)
+    end
+  end
+
+  def can_king_go?(king, y, x)
+    return false unless king.can_go?(y,x)
+    return false if self.current_player.positions.has_value?([y,x])
+    return true
+  end
 
   def current_piece_set(input)
 
@@ -117,15 +217,15 @@ class Game
     when "n"
       self.current_piece = [
       self.current_player.l_knight,
-      self.current_player.r_knight].select{ |knight| knight.can_go?(y,x)}.first
+      self.current_player.r_knight].select{ |knight| can_knight_go?(knight,y,x)}.first
     when "b"
       self.current_piece = [
       self.current_player.l_bishop,
-      self.current_player.r_bishop].select { |bishop| bishop.can_go?(y,x)}.first
+      self.current_player.r_bishop].select { |bishop| can_bishop_go?(bishop,y,x)}.first
     when "q"
-      self.current_piece = self.current_player.queen if self.current_player.queen.can_go?(y,x)
+      self.current_piece = self.current_player.queen if can_queen_go?(self.current_player.queen,y,x)
     when "k"
-      self.current_piece = self.current_player.king if self.current_player.king.can_go?(y,x)
+      self.current_piece = self.current_player.king if can_king_go?(self.current_player.king,y,x)
     else
       self.current_piece = [
       self.current_player.a_pawn,
@@ -202,15 +302,15 @@ $white_player = gets.chomp
 puts "blacks name?"
 $black_player = gets.chomp
 game = Game.new
-2.times do
+# 2.times do
+
+
+# binding pry
 game.next_move
-
-binding pry
-
 game.make_move(game.move)
 game.capture
 game.change_current_player
-end
+# end
 
 binding pry
 # game.make_move(game.move)
