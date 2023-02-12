@@ -309,6 +309,7 @@ game = Game.new
 game.next_move
 game.make_move(game.move)
 game.capture
+
 game.change_current_player
 # end
 

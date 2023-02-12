@@ -47,4 +47,9 @@ class Board
     puts "   A   B   C   D   E   F   G   H "
    end
 
+   def update_board(piece, pos, dest)
+    self.chess_board[pos.first][pos.last] = " "
+    self.chess_board[dest.first][dest.last] = piece
+   end
+
 end
