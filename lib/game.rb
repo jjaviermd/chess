@@ -2,9 +2,11 @@
 require "pry-byebug"
 
 class Game
-  attr_accessor :whites, :blacks, :current_player, :hold_player, :current_piece, :move
+  attr_accessor :whites, :blacks, :current_player, :hold_player, :current_piece,
+  :move, :board
 
   def initialize
+    @board = Board.new
     @whites = Player.new($white_player, "white")
     @blacks = Player.new($black_player, "black")
     @current_player = self.whites
@@ -239,6 +241,24 @@ class Game
     end
   end
 
+  def get_icon
+    if self.current_player.color == "white"
+      return "\u{2654}" if self.current_piece.is_a?(King)
+      return "\u{2655}" if self.current_piece.is_a?(Queen)
+      return "\u{2656}" if self.current_piece.is_a?(Rook)
+      return "\u{2658}" if self.current_piece.is_a?(Knight)
+      return "\u{2657}" if self.current_piece.is_a?(Bishop)
+      return "\u{2659}" if self.current_piece.is_a?(Pawn)
+    else 
+      return "\u{265A}" if self.current_piece.is_a?(King)
+      return "\u{265B}" if self.current_piece.is_a?(Queen)
+      return "\u{265C}" if self.current_piece.is_a?(Rook)
+      return "\u{265E}" if self.current_piece.is_a?(Knight)
+      return "\u{265D}" if self.current_piece.is_a?(Bishop)
+      return "\u{265F}" if self.current_piece.is_a?(Pawn)
+    end
+  end
+
   def change_current_player
     if self.current_player == @whites
       self.current_player, self.hold_player = @blacks, @whites
@@ -295,23 +315,3 @@ class Player
     end
   end
 end
-
-
-puts "whites name?"
-$white_player = gets.chomp
-puts "blacks name?"
-$black_player = gets.chomp
-game = Game.new
-# 2.times do
-
-
-# binding pry
-game.next_move
-game.make_move(game.move)
-game.capture
-
-game.change_current_player
-# end
-
-binding pry
-# game.make_move(game.move)

@@ -5,12 +5,15 @@ $white_player = gets.chomp
 puts "blacks name?"
 $black_player = gets.chomp
 game = Game.new
-# 2.times do
-# game.next_move
-# game.make_move(game.move)
-# game.capture
-# game.change_current_player
-# end
-
-binding pry
-# game.make_move(game.move)
+6.times do
+# binding pry
+game.board.print_board
+game.next_move
+# binding pry
+# binding pry
+game.board.update_board(game.get_icon, game.current_piece.position, game.move)
+game.make_move(game.move)
+game.capture
+# game.board.print_board
+game.change_current_player
+end

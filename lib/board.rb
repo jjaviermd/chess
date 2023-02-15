@@ -1,4 +1,4 @@
-%w{king knight pawn queen rook bishop}.each { |file| require_relative file}
+# %w{king knight pawn queen rook bishop}.each { |file| require_relative file}
 require "pry-byebug"
 class Board
 
@@ -48,8 +48,8 @@ class Board
    end
 
    def update_board(piece, pos, dest)
+    self.chess_board[8 - dest[2].to_i][dest[1].ord - 97] = piece
     self.chess_board[pos.first][pos.last] = " "
-    self.chess_board[dest.first][dest.last] = piece
    end
 
 end
