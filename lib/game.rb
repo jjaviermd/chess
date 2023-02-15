@@ -42,6 +42,26 @@ class Game
     self.current_piece = nil
   end
 
+  def check?
+    y = self.hold_player.king.position.first
+    x = self.hold_player.king.position.last
+    piece = self.current_piece
+
+    if piece.is_a?(King)
+      return can_king_go?(piece, y, x)
+    elsif piece.is_a?(Queen)
+      return can_queen_go?(piece, y, x)
+    elsif piece.is_a?(Bishop)
+      return can_bishop_go?(piece, y, x)
+    elsif piece.is_a?(Knight)
+      return can_knight_go?(piece, y, x)
+    elsif piece.is_a?(Rook)
+      return can_rook_go?(piece, y, x)
+    elsif piece.is_a?(Pawn)
+      return can_pawn_go?(piece, y, x)
+    end
+  end
+
 
   def valid_input?(input)
     valid_id = ["r", "n", "b", "q", "k", "p"]
