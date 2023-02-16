@@ -63,6 +63,26 @@ class Game
   end
 
 
+  # def check_mate?
+  #   # return check? &&
+  #   my_king = self.hold_player.king
+  #   position = self.hold_player.king.position
+
+  #   directions = [
+  #   [position.first, position.last + 1],
+  #   [position.first+1, position.last+1],
+  #   [position.first+1, position.last],
+  #   [position.first+1, position.last-1],
+  #   [position.first, position.last-1],
+  #   [position.first-1, position.last-1],
+  #   [position.first-1, position.last],
+  #   [position.first-1, position.last+1]
+  #   ]
+
+  #   directions.select { |dir| can_king_go?(my_king, dir.first, dir.last)}
+  # end
+
+
   def valid_input?(input)
     valid_id = ["r", "n", "b", "q", "k", "p"]
     return false unless input.length.between?(2, 3)
@@ -72,6 +92,22 @@ class Game
     return false unless input[1].between?("a", "h")
     return false unless input[2].to_i.between?(1, 8)
     return true
+  end
+
+  def can_piece_go?(piece, y, x)
+    if piece.is_a?(Pawn)
+      return can_pawn_go?(piece, y, x)
+    elsif piece.is_a?(King)
+      return can_king_go?(piece, y, x)
+    elsif piece.is_a?(Queen)
+      return can_queen_go?(piece, y, x)
+    elsif piece.is_a?(Knight)
+      return can_knight_go?(piece, y, x)
+    elsif piece.is_a?(Bishop)
+      return can_bishop_go?(piece, y, x)
+    elsif piece.is_a?(Rook)
+      return can_rook_go?(piece, y, x)
+    end
   end
 
   def can_pawn_go?(peon, y, x)
