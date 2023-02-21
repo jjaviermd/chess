@@ -1,10 +1,9 @@
 class Bishop
-  attr_accessor :position
+  attr_accessor :position, :color
 
-  def initialize(position)
-    # position in an array on two interger y and x (0-7)
+  def initialize(position, color)
     @position = position
-    
+    @color = color
   end
 
   def can_go?(y,x)

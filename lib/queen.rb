@@ -1,8 +1,9 @@
 class Queen
-  attr_accessor :position
+  attr_accessor :position, :color
 
-  def initialize(position)
+  def initialize(position, color)
     @position = position
+    @color = color
   end
   
   def can_go?(y,x)

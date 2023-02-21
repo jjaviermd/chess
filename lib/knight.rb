@@ -1,9 +1,10 @@
 class Knight
-  attr_accessor :position
+  attr_accessor :position, :color
   attr_reader :moves
 
-  def initialize(position) #[y,x]
+  def initialize(position, color)
     @position = position
+    @color = color
     @moves = [[1,2], [-1,-2], [1,-2], [-1,2], [2,-1], [2, 1], [-2, 1], [-2, -1]].freeze
   end
 

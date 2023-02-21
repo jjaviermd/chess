@@ -8,8 +8,8 @@ game = Game.new
 # 4.times do
 # binding pry
 game.board.print_board
-game.next_move
 binding pry
+game.next_move
 # binding pry
 game.board.update_board(game.get_icon, game.current_piece.position, game.move)
 game.make_move(game.move)

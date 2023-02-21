@@ -1,10 +1,11 @@
 class King
 
-  attr_accessor :position
+  attr_accessor :position, :color
   attr_reader :moves
 
-  def initialize(position)
+  def initialize(position, color)
     @position = position
+    @color = color
     @moves = [[1,0],[1,-1],[1,1],[-1,0],[-1,-1],[1,1],[0,1],[0,-1],[-1,1]].freeze
   end
 

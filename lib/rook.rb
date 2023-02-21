@@ -1,7 +1,8 @@
 class Rook
-  attr_accessor :position
-  def initialize(position)
-    # position(y axis, x axis) is an array on to interger from 0 to 7 [n,n]
+  attr_accessor :position, :color
+  
+  def initialize(position, color)
+    @color = color
     @position = position
   end
 

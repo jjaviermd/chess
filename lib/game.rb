@@ -63,24 +63,46 @@ class Game
   end
 
 
-  # def check_mate?
-  #   # return check? &&
-  #   my_king = self.hold_player.king
-  #   position = self.hold_player.king.position
+  def check_mate?
+    # return check? &&
+    c_p_pieces = [
+      self.current_player.king,
+      self.current_player.queen,
+      self.current_player.l_bishop,
+      self.current_player.r_bishop,
+      self.current_player.l_knight,
+      self.current_player.r_knight,
+      self.current_player.l_rook,
+      self.current_player.r_rook,
+      self.current_player.a_pawn,
+      self.current_player.b_pawn,
+      self.current_player.c_pawn,
+      self.current_player.d_pawn,
+      self.current_player.e_pawn,
+      self.current_player.f_pawn,
+      self.current_player.g_pawn,
+      self.current_player.h_pawn
+    ]
 
-  #   directions = [
-  #   [position.first, position.last + 1],
-  #   [position.first+1, position.last+1],
-  #   [position.first+1, position.last],
-  #   [position.first+1, position.last-1],
-  #   [position.first, position.last-1],
-  #   [position.first-1, position.last-1],
-  #   [position.first-1, position.last],
-  #   [position.first-1, position.last+1]
-  #   ]
+    my_king = self.hold_player.king
+    position = self.hold_player.king.position
 
-  #   directions.select { |dir| can_king_go?(my_king, dir.first, dir.last)}
-  # end
+    directions = [
+    [position.first, position.last + 1],
+    [position.first+1, position.last+1],
+    [position.first+1, position.last],
+    [position.first+1, position.last-1],
+    [position.first, position.last-1],
+    [position.first-1, position.last-1],
+    [position.first-1, position.last],
+    [position.first-1, position.last+1]
+    ]
+
+    a = directions.reject { |dir| self.hold_player.positions.has_value?(dir)}
+    a.all? do |dir| 
+      c_p_pieces.any?{ |piece| can_piece_go?(piece, dir.first, dir.last)}
+    end
+  end
 
 
   def valid_input?(input)
@@ -110,24 +132,33 @@ class Game
     end
   end
 
-  def can_pawn_go?(peon, y, x)
+  def can_pawn_go?(peon, y, x) 
+    # change WhitePawn/BlackPawn for peon.color == "white"/"black"
     if peon.is_a? WhitePawn
-      if peon.position.first - y == 1 && x == peon.position.last && (!self.hold_player.positions.has_value?([y,x]) || !self.current_player.positions.has_value?([y,x]))
+      retturn false if self.whites.positions.has_value?([y,x])
+
+      if peon.position.first - y == 1 && x == peon.position.last
+        return false if  self.blacks.positions.has_value?([y,x]) || self.whites.positions.has_value?([y,x])
         return true
-      elsif peon.position.first - y == 1 && (peon.position.last - x).abs == 1 && self.hold_player.positions.has_value?([y,x])
+      elsif peon.position.first - y == 1 && (peon.position.last - x).abs == 1 && self.blacks.positions.has_value?([y,x])
         return true
       elsif peon.position.first - y == 2 && x == peon.position.last && peon.position.first == 6
+        return false if self.whites.positions.has_value?([peon.position.first - 1,x]) || self.blacks.positions.has_value?([peon.position.first - 1,x])
         return true
       else
         return false
       end
 
     elsif peon.is_a? BlackPawn
-      if y - peon.position.first == 1 && x == peon.position.last && (!self.hold_player.positions.has_value?([y,x]) || self.current_player.positions.has_value?([y,x]))
+      return false if self.blacks.positions.has_value?([y,x])
+
+      if y - peon.position.first == 1 && x == peon.position.last
+        return false if self.whites.positions.has_value?([y,x]) || self.blacks.positions.has_value?([y,x])
         return true
-      elsif y - peon.position.first == 1 && (peon.position.last - x).abs == 1 && self.hold_player.positions.has_value?([y,x])
+      elsif y - peon.position.first == 1 && (peon.position.last - x).abs == 1 && self.whites.positions.has_value?([y,x])
         return true
       elsif y - peon.position.first == 2 && x == peon.position.last && peon.position.first == 1
+        return false if self.whites.positions.has_value?([peon.position.first + 1,x]) || self.blacks.positions.has_value?([peon.position.first + 1,x])
         return true
       else
         return false
@@ -136,115 +167,232 @@ class Game
   end
 
   def can_rook_go?(rook, y, x)
-    return false if self.current_player.positions.has_value?([y,x])
 
-    return false unless rook.can_go?(y,x)
+    if rook.color == "white"
+      return false if self.whites.positions.has_value?([y,x])
 
-    if y == rook.position.first
-      r = [rook.position.last,x].min+1..[rook.position.last,x].max-1
-      for i in r do
-        if self.hold_player.positions.has_value?([y,i]) || self.current_player.positions.has_value?([y,i])
-          return false 
+      return false unless rook.can_go?(y,x)
+
+      if y == rook.position.first
+        r = [rook.position.last,x].min+1..[rook.position.last,x].max-1
+        for i in r do
+          if self.blacks.positions.has_value?([y,i]) || self.whites.positions.has_value?([y,i])
+            return false 
+          end
         end
-      end
-      return true
-    elsif x == rook.position.last
-      r = [rook.position.first, y].min+1..[rook.position.first, y].max-1
-      for i in r do
-        if self.hold_player.positions.has_value?([i,x]) || self.current_player.positions.has_value?([i,x])
-          return false
+        return true
+      elsif x == rook.position.last
+        r = [rook.position.first, y].min+1..[rook.position.first, y].max-1
+        for i in r do
+          if self.blacks.positions.has_value?([i,x]) || self.whites.positions.has_value?([i,x])
+            return false
+          end
         end
-      end
-      return true
-    end 
+        return true
+      end 
+    end
+
+    if rook == "black"
+      return false if self.blacks.positions.has_value?([y,x])
+
+      return false unless rook.can_go?(y,x)
+
+      if y == rook.position.first
+        r = [rook.position.last,x].min+1..[rook.position.last,x].max-1
+        for i in r do
+          if self.whites.positions.has_value?([y,i]) || self.blacks.positions.has_value?([y,i])
+            return false 
+          end
+        end
+        return true
+      elsif x == rook.position.last
+        r = [rook.position.first, y].min+1..[rook.position.first, y].max-1
+        for i in r do
+          if self.whites.positions.has_value?([i,x]) || self.blacks.positions.has_value?([i,x])
+            return false
+          end
+        end
+        return true
+      end 
+    end
   end 
 
   def can_knight_go?(knight, y, x)
-    return false if self.current_player.positions.has_value?([y,x])
-    return knight.can_go?(y,x)
+    if knight.color == "white"
+      return false if self.whites.positions.has_value?([y,x])
+      return knight.can_go?(y,x)
+    end
+
+    if knight.color == "black"
+      return false if self.blacks.positions.has_value?([y,x])
+      return knight.can_go?(y,x)
+    end
+    
   end
 
   def can_bishop_go?(bishop,y,x)
 
     return false unless bishop.can_go?(y,x) 
-    return false if self.current_player.positions.has_value?([y,x])
 
-    if bishop.position.first < y && bishop.position.last > x
-      i = bishop.position.first + 1
-      j = bishop.position.last - 1
-      (y - bishop.position.first).times do
-        if self.current_player.positions.has_value?([i,j])
-          return false
-          break
+    if bishop.color == "white"
+      return false if self.whites.positions.has_value?([y,x])
+
+      if bishop.position.first < y && bishop.position.last > x
+        i = bishop.position.first + 1
+        j = bishop.position.last - 1
+        (y - bishop.position.first).times do
+          if self.whites.positions.has_value?([i,j])
+            return false
+            break
+          end
+          # return false if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
+          if self.blacks.positions.has_value?([i,j]) && [y,x] != [i,j]
+            return false
+            break
+          end
+          i + 1
+          j - 1
         end
-        # return false if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
-        if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
-          return false
-          break
-        end
-        i + 1
-        j - 1
+        return true
       end
-      return true
+
+      if bishop.position.first < y && bishop.position.last < x
+        i = bishop.position.first + 1
+        j = bishop.position.last + 1
+        (y - bishop.position.first).times do
+          if self.whites.positions.has_value?([i,j])
+            return false
+            break
+          end
+          # return false if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
+          if self.blacks.positions.has_value?([i,j]) && [y,x] != [i,j]
+            return false
+            break
+          end
+          i + 1
+          j + 1
+        end
+        return true
+      end
+
+      if bishop.position.first > y && bishop.position.last > x
+        i = bishop.position.first - 1 
+        j = bishop.position.last - 1
+        (bishop.position.first - y).times do
+          if self.whites.positions.has_value?([i,j])
+            return false
+            break
+          end
+          # return false if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
+          if self.blacks.positions.has_value?([i,j]) && [y,x] != [i,j]
+            return false
+            break
+          end
+          i - 1
+          j - 1
+        end
+        return true
+      end
+
+      if bishop.position.first > y && bishop.position.last < x
+        i = bishop.position.first - 1
+        j = bishop.position.last + 1
+        (bishop.position.first - y).times do
+          if self.whites.positions.has_value?([i,j])
+            return false
+            break
+          end
+          # return false if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
+          if self.blacks.positions.has_value?([i,j]) && [y,x] != [i,j]
+            return false
+            break
+          end
+          i - 1
+          j + 1
+        end
+        return true
+      end
     end
 
-    if bishop.position.first < y && bishop.position.last < x
-      i = bishop.position.first + 1
-      j = bishop.position.last + 1
-      (y - bishop.position.first).times do
-        if self.current_player.positions.has_value?([i,j])
-          return false
-          break
+    if bishop.color == "black"
+      return false if self.blacks.positions.has_value?([y,x])
+
+      if bishop.position.first < y && bishop.position.last > x
+        i = bishop.position.first + 1
+        j = bishop.position.last - 1
+        (y - bishop.position.first).times do
+          if self.blacks.positions.has_value?([i,j])
+            return false
+            break
+          end
+          # return false if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
+          if self.whites.positions.has_value?([i,j]) && [y,x] != [i,j]
+            return false
+            break
+          end
+          i + 1
+          j - 1
         end
-        # return false if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
-        if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
-          return false
-          break
+        return true
+      end
+
+      if bishop.position.first < y && bishop.position.last < x
+        i = bishop.position.first + 1
+        j = bishop.position.last + 1
+        (y - bishop.position.first).times do
+          if self.blacks.positions.has_value?([i,j])
+            return false
+            break
+          end
+          # return false if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
+          if self.whites.positions.has_value?([i,j]) && [y,x] != [i,j]
+            return false
+            break
+          end
+          i + 1
+          j + 1
         end
-        i + 1
-        j + 1
+        return true
       end
-      return true
-    end
 
-  if bishop.position.first > y && bishop.position.last > x
-    i = bishop.position.first - 1 
-    j = bishop.position.last - 1
-    (bishop.position.first - y).times do
-      if self.current_player.positions.has_value?([i,j])
-        return false
-        break
+      if bishop.position.first > y && bishop.position.last > x
+        i = bishop.position.first - 1 
+        j = bishop.position.last - 1
+        (bishop.position.first - y).times do
+          if self.blacks.positions.has_value?([i,j])
+            return false
+            break
+          end
+          # return false if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
+          if self.whites.positions.has_value?([i,j]) && [y,x] != [i,j]
+            return false
+            break
+          end
+          i - 1
+          j - 1
+        end
+        return true
       end
-      # return false if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
-      if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
-        return false
-        break
-      end
-      i - 1
-      j - 1
-    end
-    return true
-  end
 
-  if bishop.position.first > y && bishop.position.last < x
-    i = bishop.position.first - 1
-    j = bishop.position.last + 1
-    (bishop.position.first - y).times do
-      if self.current_player.positions.has_value?([i,j])
-        return false
-        break
+      if bishop.position.first > y && bishop.position.last < x
+        i = bishop.position.first - 1
+        j = bishop.position.last + 1
+        (bishop.position.first - y).times do
+          if self.blacks.positions.has_value?([i,j])
+            return false
+            break
+          end
+          # return false if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
+          if self.whites.positions.has_value?([i,j]) && [y,x] != [i,j]
+            return false
+            break
+          end
+          i - 1
+          j + 1
+        end
+        return true
       end
-      # return false if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
-      if self.hold_player.positions.has_value?([i,j]) && [y,x] != [i,j]
-        return false
-        break
-      end
-      i - 1
-      j + 1
     end
-    return true
-  end
-
   end  
 
   def can_queen_go?(queen, y, x)
@@ -258,8 +406,14 @@ class Game
 
   def can_king_go?(king, y, x)
     return false unless king.can_go?(y,x)
-    return false if self.current_player.positions.has_value?([y,x])
-    return true
+    if king.color == "white"
+      return false if self.whites.positions.has_value?([y,x])
+      return true
+    end
+    if king.color == "black"
+      return false if self.blacks.positions.has_value?([y,x])
+      return true
+    end
   end
 
   def current_piece_set(input)
@@ -335,33 +489,33 @@ class Player
     @color = color
     i = 0 if color == "black"
     i = 7 if color == "white"
-    @l_rook = Rook.new([i,0])
-    @l_knight = Knight.new([i,1])
-    @l_bishop = Bishop.new([i,2])
-    @queen = Queen.new([i,3])
-    @king = King.new([i,4])
-    @r_bishop = Bishop.new([i,5])
-    @r_knight = Knight.new([i,6])
-    @r_rook = Rook.new([i,7])
+    @l_rook = Rook.new([i,0], color)
+    @l_knight = Knight.new([i,1], color)
+    @l_bishop = Bishop.new([i,2], color)
+    @queen = Queen.new([i,3], color)
+    @king = King.new([i,4], color)
+    @r_bishop = Bishop.new([i,5], color)
+    @r_knight = Knight.new([i,6], color)
+    @r_rook = Rook.new([i,7], color)
     if color == "white"
-      @a_pawn = WhitePawn.new([6,0])
-      @b_pawn = WhitePawn.new([6,1])
-      @c_pawn = WhitePawn.new([6,2])
-      @d_pawn = WhitePawn.new([6,3])
-      @e_pawn = WhitePawn.new([6,4])
-      @f_pawn = WhitePawn.new([6,5])
-      @g_pawn = WhitePawn.new([6,6])
-      @h_pawn = WhitePawn.new([6,7])
+      @a_pawn = WhitePawn.new([6,0], color)
+      @b_pawn = WhitePawn.new([6,1], color)
+      @c_pawn = WhitePawn.new([6,2], color)
+      @d_pawn = WhitePawn.new([6,3], color)
+      @e_pawn = WhitePawn.new([6,4], color)
+      @f_pawn = WhitePawn.new([6,5], color)
+      @g_pawn = WhitePawn.new([6,6], color)
+      @h_pawn = WhitePawn.new([6,7], color)
     end
     if color == "black"
-      @a_pawn = BlackPawn.new([1,0])
-      @b_pawn = BlackPawn.new([1,1])
-      @c_pawn = BlackPawn.new([1,2])
-      @d_pawn = BlackPawn.new([1,3])
-      @e_pawn = BlackPawn.new([1,4])
-      @f_pawn = BlackPawn.new([1,5])
-      @g_pawn = BlackPawn.new([1,6])
-      @h_pawn = BlackPawn.new([1,7])
+      @a_pawn = BlackPawn.new([1,0], color)
+      @b_pawn = BlackPawn.new([1,1], color)
+      @c_pawn = BlackPawn.new([1,2], color)
+      @d_pawn = BlackPawn.new([1,3], color)
+      @e_pawn = BlackPawn.new([1,4], color)
+      @f_pawn = BlackPawn.new([1,5], color)
+      @g_pawn = BlackPawn.new([1,6], color)
+      @h_pawn = BlackPawn.new([1,7], color)
     end
   end
   # private
