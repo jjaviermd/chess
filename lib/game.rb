@@ -38,7 +38,10 @@ class Game
 
   def capture
     captured = self.hold_player.positions.key(self.current_piece.position)
-    self.hold_player.remove_instance_variable(captured) if captured
+    if captured
+      self.hold_player.remove_instance_variable(captured)
+      puts "#{self.current_piece} captures #{captured}"
+    end
     self.current_piece = nil
   end
 
@@ -63,8 +66,7 @@ class Game
   end
 
 
-  def check_mate?
-    # return check? &&
+  def mate?
     c_p_pieces = [
       self.current_player.king,
       self.current_player.queen,
@@ -104,6 +106,15 @@ class Game
     end
   end
 
+  def check
+    puts "CHECK!"
+  end
+
+  def check_mate
+    puts "CHECK MATE!"
+    puts "#{self.current_player} wins"
+    puts "Wanna play again"
+  end
 
   def valid_input?(input)
     valid_id = ["r", "n", "b", "q", "k", "p"]

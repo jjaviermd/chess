@@ -52,8 +52,4 @@ class Board
     self.chess_board[pos.first][pos.last] = " "
    end
 
-   def check
-    puts "CHECK!"
-   end
-
 end
