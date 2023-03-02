@@ -1,4 +1,10 @@
-class Knight
+require 'shale'
+
+class Knight < Shale::Mapper
+  attribute :position, Shale::Type::Integer, collection: true
+  attribute :color, Shale::Type::String
+  attribute :moves, Shale::Type::Integer, collection: true
+
   attr_accessor :position, :color
   attr_reader :moves
 

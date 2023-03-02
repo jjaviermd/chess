@@ -1,4 +1,8 @@
-class Pawn
+require 'shale'
+
+class Pawn < Shale::Mapper
+  attribute :position, Shale::Type::Integer, collection: true
+  attribute :color, Shale::Type::String
 
   attr_accessor :position, :color
 

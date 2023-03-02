@@ -1,4 +1,9 @@
-class Bishop
+require 'shale'
+
+class Bishop < Shale::Mapper
+  attribute :position, Shale::Type::Integer, collection: true
+  attribute :color, Shale::Type::String
+
   attr_accessor :position, :color
 
   def initialize(position, color)
