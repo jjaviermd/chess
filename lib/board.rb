@@ -1,9 +1,5 @@
-require "pry-byebug"
-require 'shale'
 
-class Board < Shale::Mapper
-  attribute :chess_board, Shale::Type::String, collection: true
-  
+class Board 
 
   attr_accessor :chess_board
   attr_reader :b_rook, :b_knight, :b_bishop, :b_king, :b_queen, :b_pawn,

@@ -1,8 +1,6 @@
 %w{board king knight pawn queen rook bishop}.each { |file| require_relative file}
-require 'shale'
 
-class Game < Shale::Mapper
-  attribute :move, Shale::Type::String
+class Game
   
   attr_accessor :whites, :blacks, :current_player, :hold_player, :current_piece,
   :move, :board
@@ -15,15 +13,6 @@ class Game < Shale::Mapper
     @hold_player = self.blacks
     @current_piece = nil
     @move = nil
-  end
-
-  def self.deserialize(yaml_string)
-    YAML::load(yaml_string)
-  end
-  
-  # and this is a much-simplified version of our CerealBox#to_s
-  def serialize
-    YAML::dump(self)
   end
 
   def next_move  
@@ -95,7 +84,7 @@ class Game < Shale::Mapper
       self.current_player.f_pawn,
       self.current_player.g_pawn,
       self.current_player.h_pawn
-    ]
+    ].compact!
 
     my_king = self.hold_player.king
     position = self.hold_player.king.position
@@ -499,10 +488,7 @@ class Game < Shale::Mapper
   end
 end
 
-class Player < Shale::Mapper
-  attribute :name, Shale::Type::String
-  attribute :color, Shale::Type::String
-
+class Player
 
   attr_accessor :king, :queen, :l_rook, :l_knight, :l_bishop, 
   :r_rook, :r_knight, :r_bishop, :a_pawn, :b_pawn, :c_pawn, :d_pawn, :e_pawn,

@@ -1,1 +1,355 @@
---- {}
+--- !ruby/object:Game
+board: !ruby/object:Board
+  w_king: "♔"
+  w_queen: "♕"
+  w_rook: "♖"
+  w_bishop: "♗"
+  w_knight: "♘"
+  w_pawn: "♙"
+  b_king: "♚"
+  b_queen: "♛"
+  b_rook: "♜"
+  b_bishop: "♝"
+  b_knight: "♞"
+  b_pawn: "♟"
+  chess_board:
+  - - "♜"
+    - "♞"
+    - "♝"
+    - "♛"
+    - "♚"
+    - "♝"
+    - "♞"
+    - "♜"
+  - - "♟"
+    - "♟"
+    - "♟"
+    - " "
+    - "♟"
+    - "♟"
+    - "♟"
+    - "♟"
+  - - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+  - - " "
+    - " "
+    - " "
+    - "♟"
+    - " "
+    - " "
+    - " "
+    - " "
+  - - " "
+    - " "
+    - " "
+    - "♙"
+    - " "
+    - " "
+    - " "
+    - " "
+  - - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+    - " "
+  - - "♙"
+    - "♙"
+    - "♙"
+    - "♔"
+    - "♙"
+    - "♙"
+    - "♙"
+    - "♙"
+  - - "♖"
+    - "♘"
+    - "♗"
+    - "♕"
+    - " "
+    - "♗"
+    - "♘"
+    - "♖"
+whites: &2 !ruby/object:Player
+  name: tt
+  color: white
+  l_rook: !ruby/object:Rook
+    color: white
+    position:
+    - 7
+    - 0
+  l_knight: !ruby/object:Knight
+    position:
+    - 7
+    - 1
+    color: white
+    moves:
+    - - 1
+      - 2
+    - - -1
+      - -2
+    - - 1
+      - -2
+    - - -1
+      - 2
+    - - 2
+      - -1
+    - - 2
+      - 1
+    - - -2
+      - 1
+    - - -2
+      - -1
+  l_bishop: !ruby/object:Bishop
+    position:
+    - 7
+    - 2
+    color: white
+  queen: !ruby/object:Queen
+    position:
+    - 7
+    - 3
+    color: white
+  king: !ruby/object:King
+    position:
+    - 6
+    - 3
+    color: white
+    moves:
+    - - 1
+      - 0
+    - - 1
+      - -1
+    - - 1
+      - 1
+    - - -1
+      - 0
+    - - -1
+      - -1
+    - - 1
+      - 1
+    - - 0
+      - 1
+    - - 0
+      - -1
+    - - -1
+      - 1
+  r_bishop: !ruby/object:Bishop
+    position:
+    - 7
+    - 5
+    color: white
+  r_knight: !ruby/object:Knight
+    position:
+    - 7
+    - 6
+    color: white
+    moves:
+    - - 1
+      - 2
+    - - -1
+      - -2
+    - - 1
+      - -2
+    - - -1
+      - 2
+    - - 2
+      - -1
+    - - 2
+      - 1
+    - - -2
+      - 1
+    - - -2
+      - -1
+  r_rook: !ruby/object:Rook
+    color: white
+    position:
+    - 7
+    - 7
+  a_pawn: !ruby/object:WhitePawn
+    position:
+    - 6
+    - 0
+    color: white
+  b_pawn: !ruby/object:WhitePawn
+    position:
+    - 6
+    - 1
+    color: white
+  c_pawn: !ruby/object:WhitePawn
+    position:
+    - 6
+    - 2
+    color: white
+  d_pawn: !ruby/object:WhitePawn
+    position:
+    - 4
+    - 3
+    color: white
+  e_pawn: !ruby/object:WhitePawn
+    position:
+    - 6
+    - 4
+    color: white
+  f_pawn: !ruby/object:WhitePawn
+    position:
+    - 6
+    - 5
+    color: white
+  g_pawn: !ruby/object:WhitePawn
+    position:
+    - 6
+    - 6
+    color: white
+  h_pawn: !ruby/object:WhitePawn
+    position:
+    - 6
+    - 7
+    color: white
+blacks: &1 !ruby/object:Player
+  name: pp
+  color: black
+  l_rook: !ruby/object:Rook
+    color: black
+    position:
+    - 0
+    - 0
+  l_knight: !ruby/object:Knight
+    position:
+    - 0
+    - 1
+    color: black
+    moves:
+    - - 1
+      - 2
+    - - -1
+      - -2
+    - - 1
+      - -2
+    - - -1
+      - 2
+    - - 2
+      - -1
+    - - 2
+      - 1
+    - - -2
+      - 1
+    - - -2
+      - -1
+  l_bishop: !ruby/object:Bishop
+    position:
+    - 0
+    - 2
+    color: black
+  queen: !ruby/object:Queen
+    position:
+    - 0
+    - 3
+    color: black
+  king: !ruby/object:King
+    position:
+    - 0
+    - 4
+    color: black
+    moves:
+    - - 1
+      - 0
+    - - 1
+      - -1
+    - - 1
+      - 1
+    - - -1
+      - 0
+    - - -1
+      - -1
+    - - 1
+      - 1
+    - - 0
+      - 1
+    - - 0
+      - -1
+    - - -1
+      - 1
+  r_bishop: !ruby/object:Bishop
+    position:
+    - 0
+    - 5
+    color: black
+  r_knight: !ruby/object:Knight
+    position:
+    - 0
+    - 6
+    color: black
+    moves:
+    - - 1
+      - 2
+    - - -1
+      - -2
+    - - 1
+      - -2
+    - - -1
+      - 2
+    - - 2
+      - -1
+    - - 2
+      - 1
+    - - -2
+      - 1
+    - - -2
+      - -1
+  r_rook: !ruby/object:Rook
+    color: black
+    position:
+    - 0
+    - 7
+  a_pawn: !ruby/object:BlackPawn
+    position:
+    - 1
+    - 0
+    color: black
+  b_pawn: !ruby/object:BlackPawn
+    position:
+    - 1
+    - 1
+    color: black
+  c_pawn: !ruby/object:BlackPawn
+    position:
+    - 1
+    - 2
+    color: black
+  d_pawn: !ruby/object:BlackPawn
+    position:
+    - 3
+    - 3
+    color: black
+  e_pawn: !ruby/object:BlackPawn
+    position:
+    - 1
+    - 4
+    color: black
+  f_pawn: !ruby/object:BlackPawn
+    position:
+    - 1
+    - 5
+    color: black
+  g_pawn: !ruby/object:BlackPawn
+    position:
+    - 1
+    - 6
+    color: black
+  h_pawn: !ruby/object:BlackPawn
+    position:
+    - 1
+    - 7
+    color: black
+current_player: *1
+hold_player: *2
+current_piece:
+move:

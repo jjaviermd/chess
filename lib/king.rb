@@ -1,9 +1,5 @@
-require 'shale'
 
-class King < Shale::Mapper
-  attribute :position, Shale::Type::Integer, collection: true
-  attribute :color, Shale::Type::String
-  attribute :moves, Shale::Type::Integer, collection: true
+class King 
 
   attr_accessor :position, :color
   attr_reader :moves

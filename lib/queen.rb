@@ -1,9 +1,5 @@
 
-require 'shale'
-class Queen < Shale::Mapper
-  attribute :position, Shale::Type::Integer, collection: true
-  attribute :color, Shale::Type::String
-  
+class Queen 
   attr_accessor :position, :color
 
   def initialize(position, color)

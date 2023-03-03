@@ -1,9 +1,4 @@
-require 'shale'
-
-class Pawn < Shale::Mapper
-  attribute :position, Shale::Type::Integer, collection: true
-  attribute :color, Shale::Type::String
-
+class Pawn 
   attr_accessor :position, :color
 
   def initialize(position, color)

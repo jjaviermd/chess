@@ -1,8 +1,5 @@
-require 'shale'
 
-class Bishop < Shale::Mapper
-  attribute :position, Shale::Type::Integer, collection: true
-  attribute :color, Shale::Type::String
+class Bishop 
 
   attr_accessor :position, :color
 
