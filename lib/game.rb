@@ -40,7 +40,7 @@ class Game
     captured = self.hold_player.positions.key(self.current_piece.position)
     if captured
       self.hold_player.remove_instance_variable(captured)
-      puts "#{self.current_piece} captures #{captured}"
+      puts "#{self.current_player.color} #{self.current_piece.class} captures #{captured}"
     end
     self.current_piece = nil
   end
@@ -67,6 +67,7 @@ class Game
 
 
   def mate?
+    return false unless self.check?
     c_p_pieces = [
       self.current_player.king,
       self.current_player.queen,
@@ -84,9 +85,8 @@ class Game
       self.current_player.f_pawn,
       self.current_player.g_pawn,
       self.current_player.h_pawn
-    ].compact!
+    ]
 
-    my_king = self.hold_player.king
     position = self.hold_player.king.position
 
     directions = [
@@ -100,9 +100,10 @@ class Game
     [position.first-1, position.last+1]
     ]
 
-    a = directions.reject { |dir| self.hold_player.positions.has_value?(dir)}
-    a.all? do |dir| 
-      c_p_pieces.any?{ |piece| can_piece_go?(piece, dir.first, dir.last)}
+    a = directions.reject! { |dir| self.hold_player.positions.has_value?(dir)}
+    a.reject!{ |dir| dir.any? { |e| e >= 8 || e <=-1}}
+    a.all? do |dir|
+      c_p_pieces.any? { |piece| can_piece_go?(piece, dir.first, dir.last)}
     end
   end
 
@@ -112,7 +113,7 @@ class Game
 
   def check_mate
     puts "CHECK MATE!"
-    puts "#{self.current_player} wins"
+    puts "#{self.current_player.name} wins"
     puts "Wanna play again"
   end
 

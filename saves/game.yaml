@@ -24,8 +24,8 @@ board: !ruby/object:Board
   - - "♟"
     - "♟"
     - "♟"
-    - " "
     - "♟"
+    - " "
     - "♟"
     - "♟"
     - "♟"
@@ -39,16 +39,16 @@ board: !ruby/object:Board
     - " "
   - - " "
     - " "
-    - " "
-    - "♟"
-    - " "
-    - " "
-    - " "
-    - " "
-  - - " "
     - " "
     - " "
     - "♙"
+    - " "
+    - " "
+    - " "
+  - - " "
+    - " "
+    - " "
+    - " "
     - " "
     - " "
     - " "
@@ -64,21 +64,21 @@ board: !ruby/object:Board
   - - "♙"
     - "♙"
     - "♙"
-    - "♔"
     - "♙"
     - "♙"
+    - " "
     - "♙"
     - "♙"
   - - "♖"
     - "♘"
     - "♗"
     - "♕"
-    - " "
+    - "♔"
     - "♗"
     - "♘"
     - "♖"
 whites: &2 !ruby/object:Player
-  name: tt
+  name: cafsf
   color: white
   l_rook: !ruby/object:Rook
     color: white
@@ -119,8 +119,8 @@ whites: &2 !ruby/object:Player
     color: white
   king: !ruby/object:King
     position:
-    - 6
-    - 3
+    - 7
+    - 4
     color: white
     moves:
     - - 1
@@ -190,7 +190,7 @@ whites: &2 !ruby/object:Player
     color: white
   d_pawn: !ruby/object:WhitePawn
     position:
-    - 4
+    - 6
     - 3
     color: white
   e_pawn: !ruby/object:WhitePawn
@@ -200,8 +200,8 @@ whites: &2 !ruby/object:Player
     color: white
   f_pawn: !ruby/object:WhitePawn
     position:
-    - 6
-    - 5
+    - 3
+    - 4
     color: white
   g_pawn: !ruby/object:WhitePawn
     position:
@@ -214,7 +214,7 @@ whites: &2 !ruby/object:Player
     - 7
     color: white
 blacks: &1 !ruby/object:Player
-  name: pp
+  name: fvsdv
   color: black
   l_rook: !ruby/object:Rook
     color: black
@@ -326,13 +326,8 @@ blacks: &1 !ruby/object:Player
     color: black
   d_pawn: !ruby/object:BlackPawn
     position:
-    - 3
-    - 3
-    color: black
-  e_pawn: !ruby/object:BlackPawn
-    position:
     - 1
-    - 4
+    - 3
     color: black
   f_pawn: !ruby/object:BlackPawn
     position:
